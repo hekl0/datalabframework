@@ -100,6 +100,8 @@ class SparkEngine(Engine):
                 packages.append('org.xerial:sqlite-jdbc:jar:3.25.2')
             elif v['service'] == 'postgres':
                 packages.append('org.postgresql:postgresql:42.2.5')
+            elif v['service'] == 'mssql':
+                packages.append('com.microsoft.sqlserver:mssql-jdbc:6.4.0.jre8')
 
         if packages:
             submit_packages = ','.join(packages)
@@ -233,7 +235,6 @@ class SparkEngine(Engine):
             logging.error('could not load')
             print(e)
             return None
-
         obj = dataframe.filter_by_date(
                 obj,
                 md['read']['filter']['date_column'],
@@ -241,7 +242,6 @@ class SparkEngine(Engine):
                 md['read']['filter']['date_end'],
                 md['read']['filter']['date_window'],
                 md['read']['filter']['date_timezone'])
-
         obj = dataframe.repartition(obj, md['read']['partition']['repartition'])
         obj = dataframe.coalesce(obj, md['read']['partition']['coalesce'])
         obj = dataframe.cache(obj, md['read']['cache'])

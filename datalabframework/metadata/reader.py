@@ -127,7 +127,6 @@ def validate_schema(md, schema_filename):
         jsonschema.validate(md, yaml.load(f))
 
 def validate(md):
-
     # validate data structure
     validate_schema(md, 'top.yml')
     # _validate_schema(md['loggers'], 'loggers.yml')
